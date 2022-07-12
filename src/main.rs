@@ -1,6 +1,7 @@
 #![allow(unused)]
 
 use clap::Parser;
+use gru::Config;
 use std::{env, process, error::Error};
 
 /// Search for a pattern in a file and display the lines that contain it.
@@ -13,7 +14,7 @@ fn main() {
         process::exit(1);
     });
     
-    if let Err(e) = run(config) {
+    if let Err(e) = gru::run(config) {
         println!("Application error: {e}");
         process::exit(1);
     }
