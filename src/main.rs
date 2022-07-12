@@ -1,6 +1,7 @@
 #![allow(unused)]
 
 use clap::Parser;
+use std::env;
 
 /// Search for a pattern in a file and display the lines that contain it.
 #[derive(Parser)]
@@ -11,14 +12,12 @@ struct Cli {
 }
 
 fn main() {
-    let args = Cli::parse();
     // let pattern = std::env::args().nth(1).expect("No pattern given");
     // let path = std::env::args().nth(2).expect("No path given");
-    // println!("pattern: {}", args.pattern);
-    // println!("path: {:?}", args.path);
-
+    
+    let args = Cli::parse();
     let content = std::fs::read_to_string(&args.path)
-        .expect("could not read file");
+        .expect("Could not read file");
     
     for line in content.lines() {
         if line.contains(&args.pattern) {
