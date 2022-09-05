@@ -2,6 +2,7 @@ use std::error::Error;
 use std::{fs, env};
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    println!("Lines:");
     let content = fs::read_to_string(config.filename)?;
     let lines = if config.case_sensitive {
         search(&config.query, &content)
