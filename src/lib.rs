@@ -1,8 +1,12 @@
 use std::error::Error;
 use std::{fs, env};
+pub struct Config {
+    pub query: String,
+    pub filename: String,
+    pub case_sensitive: bool
+}
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    println!("Lines:");
     let content = fs::read_to_string(config.filename)?;
     let lines = if config.case_sensitive {
         search(&config.query, &content)
@@ -10,14 +14,8 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         search_case_insensitive(&config.query, &content)
     };
     for line in lines {
-        println!("{line}");
     }    
     Ok(())
-}
-pub struct Config {
-    pub query: String,
-    pub filename: String,
-    pub case_sensitive: bool
 }
 
 impl Config {
