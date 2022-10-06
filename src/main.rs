@@ -16,7 +16,12 @@ pub struct State {
 }
 
 pub trait Command {
-    
+
+}
+
+pub struct File<'a> {
+    localPath: &'a str,
+    repoPath: &'a str
 }
 
 fn main() {
