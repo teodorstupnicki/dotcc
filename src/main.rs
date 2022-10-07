@@ -31,8 +31,8 @@ pub struct Configuration<'a> {
 }
 
 impl<'a> Configuration<'a> {
-    pub fn new(path: &'a str) -> Result<Configuration, &'static str> {
-        let deserialized = serde_json::from_str(path).unwrap();
+    pub fn new(path: &'a str) -> Result<Configuration, Box<dyn Error>> {
+        let deserialized = serde_json::from_str::<Configuration>(path)?;
         Ok(deserialized)
     }
 }
@@ -43,19 +43,11 @@ fn main() {
         process::exit(1);
     });;
     let config = Configuration::new(&content).unwrap_or_else(|err| {
-        eprintln!("Problem passing arguments: {err}");
+        eprintln!("Problem with creating configuration object: {err}");
         process::exit(1);
     });
+
     println!("Repository url: {}", config.url);
-    // let config = Config::new(env::args()).unwrap_or_else(|err| {
-    //     eprintln!("Problem passing arguments: {err}");
-    //     process::exit(1);
-    // });
-    
-    // if let Err(e) = gru::run(config) {
-    //     eprintln!("Application error: {e}");
-    //     process::exit(1);
-    // }
 }
 
 fn read_config<'a>(path: &'a str) -> Result<String, Box<dyn Error>> {
