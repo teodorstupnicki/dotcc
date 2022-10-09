@@ -1,5 +1,4 @@
 #![allow(unused)]
-
 use clap::Parser;
 use gru::Configuration;
 use std::{env, process, error::Error, fs};
@@ -23,14 +22,22 @@ pub struct File<'a> {
 }
 
 fn main() {
+    let command = read_command(env::args()).unwrap_or_else(|err| {
+        eprintln!("Problem reading configuration file: {err}");
+        process::exit(1);
+    });
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
-    });;
+    });
     let config = Configuration::new(&content).unwrap_or_else(|err| {
         eprintln!("Problem with creating configuration object: {err}");
         process::exit(1);
     });
 
     println!("Repository url: {}", config.url);
+}
+
+pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
+
 }
