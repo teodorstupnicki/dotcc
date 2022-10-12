@@ -1,5 +1,5 @@
 #![allow(unused)]
-use clap::Parser;
+use clap::{Parser, arg};
 use gru::Configuration;
 use std::{env, process, error::Error, fs};
 use serde::Deserialize;
@@ -44,5 +44,10 @@ pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
         .subcommand_required(true)
         .arg_required_else_help(true)
         .allow_external_subcommands(true)
-        .subcommand("check");
+        .subcommand(
+            clap::Command::new("clone")
+            .about("Clones repos")
+            .arg(arg!(<REMOTE> "The remote to clone"))
+            .arg_required_else_help(true),
+        );
 }
