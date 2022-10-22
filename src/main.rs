@@ -47,5 +47,10 @@ pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
             clap::Command::new("check")
             .about("Validates repository")
             .arg_required_else_help(true),
+        )
+        .subcommand(
+            clap::Command::new("import")
+            .about("Imports configuration files")
+            .arg_required_else_help(true),
         );
 }
