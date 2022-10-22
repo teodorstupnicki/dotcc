@@ -39,15 +39,13 @@ fn main() {
 }
 
 pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
-    clap::Command::new("git")
-        .about("A fictional versioning CLI")
+    clap::Command::new("gru")
         .subcommand_required(true)
         .arg_required_else_help(true)
         .allow_external_subcommands(true)
         .subcommand(
-            clap::Command::new("clone")
-            .about("Clones repos")
-            .arg(arg!(<REMOTE> "The remote to clone"))
+            clap::Command::new("check")
+            .about("Validates repository")
             .arg_required_else_help(true),
         );
 }
