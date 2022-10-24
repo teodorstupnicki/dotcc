@@ -50,7 +50,7 @@ pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
         )
         .subcommand(
             clap::Command::new("import")
-            .about("Imports configuration files")
+            .about("Imports configuration")
             .arg_required_else_help(true),
         );
 }
