@@ -5,7 +5,7 @@ use std::{env, process, error::Error, fs};
 use serde::Deserialize;
 
 /// Config file manager
-static CONFIG_FILE_NAME: &str = "gru-settings.json";
+static CONFIG_FILE_NAME: &str = "gru-settings.json ";
 pub struct Repository {
     pub path: String
 }
