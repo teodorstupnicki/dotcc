@@ -1,5 +1,5 @@
 #![allow(unused)]
-use clap::{Parser, arg};
+use clap::{Parser, arg, Subcommand};
 use gru::Configuration;
 use std::{env, process, error::Error, fs};
 use serde::Deserialize;
@@ -9,16 +9,12 @@ static CONFIG_FILE_NAME: &str = "gru-settings.json";
 
 #[derive(Debug, Parser)]
 struct Args {
-   #[command(subcommand)]
+   #[clap(subcommand)]
    action: Action,
 }
 
-#[derive(clap::Subcommand)]
-enum Action {
-   Add,
-   Remove,
-}
-pub enum Command {
+#[derive(Debug, Subcommand)]
+pub enum Action {
     Check,
     Install,
     Apply
@@ -30,10 +26,7 @@ pub struct File<'a> {
 }
 
 fn main() {
-    let command = read_command(env::args()).unwrap_or_else(|err| {
-        eprintln!("Invalid usage: {err}");
-        process::exit(1);
-    });
+    let command = Args::parse();
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
@@ -46,20 +39,20 @@ fn main() {
     println!("Repository url: {}", config.url);
 }
 
-pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
-    let m = clap::Command::new("gru")
-        .subcommand_required(true)
-        .arg_required_else_help(true)
-        .allow_external_subcommands(true)
-        .subcommand(
-            clap::Command::new("check")
-            .about("Validates repository")
-            .arg_required_else_help(true),
-        )
-        .subcommand(
-            clap::Command::new("import")
-            .about("Imports configuration")
-            .arg_required_else_help(true),
-        ).get_matches();
-    Result::Ok(())
-}
+// pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
+//     let m = clap::Command::new("gru")
+//         .subcommand_required(true)
+//         .arg_required_else_help(true)
+//         .allow_external_subcommands(true)
+//         .subcommand(
+//             clap::Command::new("check")
+//             .about("Validates repository")
+//             .arg_required_else_help(true),
+//         )
+//         .subcommand(
+//             clap::Command::new("import")
+//             .about("Imports configuration")
+//             .arg_required_else_help(true),
+//         ).get_matches();
+//     Result::Ok(())
+// }
