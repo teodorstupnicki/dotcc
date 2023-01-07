@@ -6,10 +6,18 @@ use serde::Deserialize;
 
 /// Config file manager
 static CONFIG_FILE_NAME: &str = "gru-settings.json";
-pub struct Repository {
-    pub path: String
+
+#[derive(Debug, Parser)]
+struct Args {
+   #[command(subcommand)]
+   action: Action,
 }
 
+#[derive(clap::Subcommand)]
+enum Action {
+   Add,
+   Remove,
+}
 pub enum Command {
     Check,
     Install,
@@ -23,7 +31,7 @@ pub struct File<'a> {
 
 fn main() {
     let command = read_command(env::args()).unwrap_or_else(|err| {
-        eprintln!("Problem reading configuration file: {err}");
+        eprintln!("Invalid usage: {err}");
         process::exit(1);
     });
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
@@ -39,7 +47,7 @@ fn main() {
 }
 
 pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
-    clap::Command::new("gru")
+    let m = clap::Command::new("gru")
         .subcommand_required(true)
         .arg_required_else_help(true)
         .allow_external_subcommands(true)
@@ -52,6 +60,6 @@ pub fn read_command(mut args: env::Args) -> Result<Command, Box<dyn Error>> {
             clap::Command::new("import")
             .about("Imports configuration")
             .arg_required_else_help(true),
-        );
-    Command::new()
+        ).get_matches();
+    Result::Ok(())
 }
