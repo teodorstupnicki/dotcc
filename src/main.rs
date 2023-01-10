@@ -1,5 +1,5 @@
 #![allow(unused)]
-use clap::{Parser, arg, Subcommand};
+use clap::{Parser, arg, Subcommand, Args};
 use gru::Configuration;
 use std::{env, process, error::Error, fs};
 use serde::Deserialize;
@@ -8,16 +8,35 @@ use serde::Deserialize;
 static CONFIG_FILE_NAME: &str = "gru-settings.json";
 
 #[derive(Debug, Parser)]
-struct Args {
+struct GruArgs {
    #[clap(subcommand)]
-   action: Action,
+   action: GruCommand,
 }
 
 #[derive(Debug, Subcommand)]
-pub enum Action {
-    Check,
-    Install,
-    Apply
+pub enum GruCommand {
+    Check(CheckSubcommand),
+    /// Install files in filesystem
+    Install(InstallSubcommand),
+    Apply(ApplySubcommand),
+}
+
+#[derive(Debug, Args)]
+pub struct CheckSubcommand {
+    /// Configuration file path
+    pub file: String,
+}
+
+#[derive(Debug, Args)]
+pub struct InstallSubcommand {
+    /// Configuration file path
+    pub file: String,
+}
+
+#[derive(Debug, Args)]
+pub struct ApplySubcommand {
+    /// Configuration file path
+    pub file: String,
 }
 
 pub struct File<'a> {
@@ -26,7 +45,7 @@ pub struct File<'a> {
 }
 
 fn main() {
-    let command = Args::parse();
+    let command = GruArgs::parse();
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
