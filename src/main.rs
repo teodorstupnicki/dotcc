@@ -9,7 +9,7 @@ static CONFIG_FILE_NAME: &str = "gru-settings.json";
 
 #[derive(Debug, Parser)]
 struct GruArgs {
-    /// Manage configuration files across filesystem
+    /// Manage configuration files
    #[clap(subcommand)]
    action: GruCommand,
 }
