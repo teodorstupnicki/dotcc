@@ -19,6 +19,7 @@ pub enum GruCommand {
     Check(CheckSubcommand),
     /// Install files in filesystem
     Install(InstallSubcommand),
+    /// Apply changes to repository
     Apply(ApplySubcommand),
 }
 
