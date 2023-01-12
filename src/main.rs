@@ -16,7 +16,7 @@ struct GruArgs {
 
 #[derive(Debug, Subcommand)]
 pub enum GruCommand {
-    /// Check differneces between files
+    /// Check differences between files
     Check(CheckSubcommand),
     /// Install files in filesystem
     Install(InstallSubcommand),
