@@ -9,7 +9,7 @@ static CONFIG_FILE_NAME: &str = "gru-settings.json";
 
 #[derive(Debug, Parser)]
 struct GruArgs {
-    /// Manage configuration files
+    /// Manage configuration files 
    #[clap(subcommand)]
    action: GruCommand,
 }
@@ -26,13 +26,13 @@ pub enum GruCommand {
 
 #[derive(Debug, Args)]
 pub struct CheckSubcommand {
-    /// Configuration file path
+    /// Configuration file path 
     pub file: String,
 }
 
 #[derive(Debug, Args)]
 pub struct InstallSubcommand {
-    /// Configuration file path
+    /// Configuration file path 
     pub file: String,
 }
 
