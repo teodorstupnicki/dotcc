@@ -38,7 +38,7 @@ pub struct InstallSubcommand {
 
 #[derive(Debug, Args)]
 pub struct ApplySubcommand {
-    /// Configuration file path
+    /// Configuration file path 
     pub file: String,
 }
 
