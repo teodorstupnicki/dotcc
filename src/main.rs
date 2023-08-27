@@ -64,9 +64,15 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use crate::CONFIG_FILE_NAME;
     #[test]
     fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+        let x = gru::read_config(CONFIG_FILE_NAME);
+        let check = if let Ok(result) = x {
+            true
+        } else {
+            false
+        };
+        assert!(check);
     }
 }
