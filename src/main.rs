@@ -51,6 +51,7 @@ fn main() {
     let command = GruArgs::parse();
     match command.action {
         GruCommand::Check(subcommand) => run_check(subcommand),
+        GruCommand::Install(subcommand) => todo!(),
     }
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
@@ -64,7 +65,11 @@ fn main() {
     println!("Repository url: {}", config.url);
 }
 
-fn run_check(command: CheckSubcommand) {
+fn run_check(subcommand: CheckSubcommand) {
+
+}
+
+fn run_install(subcommand: InstallSubcommand) {
 
 }
 #[cfg(test)]
