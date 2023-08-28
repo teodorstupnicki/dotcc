@@ -27,19 +27,19 @@ pub enum GruCommand {
 #[derive(Debug, Args)]
 pub struct CheckSubcommand {
     /// Configuration file path 
-    pub file: String,
+    pub file: Option<String>,
 }
 
 #[derive(Debug, Args)]
 pub struct InstallSubcommand {
     /// Configuration file path 
-    pub file: String,
+    pub file: Option<String>,
 }
 
 #[derive(Debug, Args)]
 pub struct ApplySubcommand {
     /// Configuration file path 
-    pub file: String,
+    pub file: Option<String>,
 }
 
 pub struct File<'a> {
