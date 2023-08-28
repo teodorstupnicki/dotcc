@@ -51,7 +51,8 @@ fn main() {
     let command = GruArgs::parse();
     match command.action {
         GruCommand::Check(subcommand) => run_check(subcommand),
-        GruCommand::Install(subcommand) => todo!(),
+        GruCommand::Install(subcommand) => run_install(subcommand),
+        GruCommand::Apply(subcommand) => run_apply(subcommand),
     }
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
@@ -72,6 +73,12 @@ fn run_check(subcommand: CheckSubcommand) {
 fn run_install(subcommand: InstallSubcommand) {
 
 }
+
+fn run_apply(subcommand: ApplySubcommand) {
+
+}
+
+
 #[cfg(test)]
 mod tests {
     #[test]
