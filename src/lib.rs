@@ -13,7 +13,7 @@ impl<'a> Configuration<'a> {
     }
 }
 
-pub fn read_config<'a>(path: &'a str) -> Result<String, Box<dyn Error>> {
-    let contents = fs::read_to_string("gru-settings.json")?;
+pub fn read_config<'a>(path: &'a str) -> Result<String, std::io::Error> {
+    let contents = fs::read_to_string(path)?;
     Ok(contents)
 }

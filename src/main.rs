@@ -49,6 +49,9 @@ pub struct File<'a> {
 
 fn main() {
     let command = GruArgs::parse();
+    match command.action {
+        GruCommand::Check(subcommand) => run_check(subcommand),
+    }
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
@@ -61,13 +64,15 @@ fn main() {
     println!("Repository url: {}", config.url);
 }
 
+fn run_check(command: CheckSubcommand) {
 
+}
 #[cfg(test)]
 mod tests {
-    use crate::CONFIG_FILE_NAME;
     #[test]
     fn it_works() {
-        let x = gru::read_config(CONFIG_FILE_NAME);
+        const DEFAULT_CONFIGFILE_NAME: &str = "gru-settings.json";
+        let x = gru::read_config(DEFAULT_CONFIGFILE_NAME);
         let check = if let Ok(result) = x {
             true
         } else {
