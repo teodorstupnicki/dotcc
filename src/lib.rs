@@ -3,7 +3,8 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct Configuration<'a> {
-    pub url: &'a str
+    pub url: &'a str,
+    pub files: Vec<String>,
 }
 
 impl<'a> Configuration<'a> {
