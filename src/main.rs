@@ -64,6 +64,9 @@ fn main() {
     });
 
     println!("Repository url: {}", config.url);
+    for line in config.files.iter() {
+        println!("{}", line);
+    }
 }
 
 fn run_check(subcommand: CheckSubcommand) {
