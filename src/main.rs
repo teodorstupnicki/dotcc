@@ -1,7 +1,7 @@
 #![allow(unused)]
 use clap::{Parser, arg, Subcommand, Args};
 use gru::Configuration;
-use std::{env, process, error::Error, fs};
+use std::{env, process, error::Error, fs, string};
 use serde::Deserialize;
 
 /// Config file manager
@@ -69,8 +69,28 @@ fn main() {
     }
 }
 
-fn run_check(subcommand: CheckSubcommand) {
+fn get_config(filename: &str) -> Configuration {
+    let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
+        eprintln!("Problem reading configuration file: {err}");
+        process::exit(1);
+    });
+    let config = Configuration::new(&content).unwrap_or_else(|err| {
+        eprintln!("Problem with creating configuration object: {err}");
+        process::exit(1);
+    });
+    
+    config
+}
 
+fn parse_file(config_line: &str) {
+
+}
+
+fn run_check(subcommand: CheckSubcommand) {
+    let config = get_config(CONFIG_FILE_NAME);
+    for line in config.files.iter() {
+        println!("{}", line);
+    }
 }
 
 fn run_install(subcommand: InstallSubcommand) {
