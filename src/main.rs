@@ -1,8 +1,9 @@
 #![allow(unused)]
 use clap::{Parser, arg, Subcommand, Args};
 use gru::Configuration;
-use std::{env, process, error::Error, fs, string};
+use std::{env, process, error::Error, fs, string, path::PathBuf};
 use serde::Deserialize;
+use dirs;
 
 /// Config file manager
 static CONFIG_FILE_NAME: &str = "gru-settings.json";
@@ -54,22 +55,9 @@ fn main() {
         GruCommand::Install(subcommand) => run_install(subcommand),
         GruCommand::Apply(subcommand) => run_apply(subcommand),
     }
-    let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
-        eprintln!("Problem reading configuration file: {err}");
-        process::exit(1);
-    });
-    let config = Configuration::new(&content).unwrap_or_else(|err| {
-        eprintln!("Problem with creating configuration object: {err}");
-        process::exit(1);
-    });
-
-    println!("Repository url: {}", config.url);
-    for line in config.files.iter() {
-        println!("{}", line);
-    }
 }
 
-fn get_config(filename: &str) -> Configuration {
+fn get_config(filename: &str) {
     let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
@@ -78,18 +66,46 @@ fn get_config(filename: &str) -> Configuration {
         eprintln!("Problem with creating configuration object: {err}");
         process::exit(1);
     });
-    
-    config
 }
 
 fn parse_file(config_line: &str) {
-
+    let home_dir = match dirs::home_dir() {
+        Some(home) => home,
+        None => PathBuf::from("")
+    };
+    let mut home_str = home_dir.into_os_string().into_string().unwrap();
+    println!("Home: {}", home_str.to_string());
+    let mut split = config_line.split(':');
+    let mut system_path = split.next().unwrap().to_string();
+    system_path.remove(0);
+    home_str.push_str(&system_path);
+    println!("File: {}", home_str.to_string());
+    let repo_path = split.next().unwrap(); 
+    println!("File: {}", repo_path);
+    let system_file_handle = fs::metadata(home_str.to_string());
+    let repo_file_handle = fs::metadata(repo_path);
+    match system_file_handle {
+       Ok(m) => println!("File {} already exists!", system_path),
+       Err(error) => println!("{}", error)
+    }
+    
+    match repo_file_handle {
+       Ok(m) => println!("File {} already exists!", repo_path),
+       Err(error) => println!("{}", error)
+    }
 }
 
 fn run_check(subcommand: CheckSubcommand) {
-    let config = get_config(CONFIG_FILE_NAME);
+    let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
+        eprintln!("Problem reading configuration file: {err}");
+        process::exit(1);
+    });
+    let config = Configuration::new(&content).unwrap_or_else(|err| {
+        eprintln!("Problem with creating configuration object: {err}");
+        process::exit(1);
+    });
     for line in config.files.iter() {
-        println!("{}", line);
+        parse_file(line);
     }
 }
 
