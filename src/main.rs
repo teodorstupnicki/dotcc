@@ -1,12 +1,12 @@
 #![allow(unused)]
 use clap::{Parser, arg, Subcommand, Args};
-use gru::Configuration;
+use dotcc::Configuration;
 use std::{env, process, error::Error, fs, string, path::PathBuf};
 use serde::Deserialize;
 use dirs;
 
 /// Config file manager
-static CONFIG_FILE_NAME: &str = "gru-settings.json";
+static CONFIG_FILE_NAME: &str = "dotcc-config.json";
 
 #[derive(Debug, Parser)]
 struct GruArgs {
@@ -58,7 +58,7 @@ fn main() {
 }
 
 fn get_config(filename: &str) {
-    let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
+    let content = dotcc::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
     });
@@ -104,7 +104,7 @@ fn parse_file(config_line: &str) {
 }
 
 fn run_check(subcommand: CheckSubcommand) {
-    let content = gru::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
+    let content = dotcc::read_config(CONFIG_FILE_NAME).unwrap_or_else(|err| {
         eprintln!("Problem reading configuration file: {err}");
         process::exit(1);
     });
@@ -130,8 +130,8 @@ fn run_apply(subcommand: ApplySubcommand) {
 mod tests {
     #[test]
     fn it_works() {
-        const DEFAULT_CONFIGFILE_NAME: &str = "gru-settings.json";
-        let x = gru::read_config(DEFAULT_CONFIGFILE_NAME);
+        const DEFAULT_CONFIGFILE_NAME: &str = "dotcc-config.json";
+        let x = dotcc::read_config(DEFAULT_CONFIGFILE_NAME);
         let check = if let Ok(result) = x {
             true
         } else {
