@@ -86,12 +86,20 @@ fn parse_file(config_line: &str) {
     let repo_file_handle = fs::metadata(repo_path);
     match system_file_handle {
        Ok(m) => println!("File {} already exists!", system_path),
-       Err(error) => println!("{}", error)
+       Err(error) => { 
+           println!("Repository error: {}", error);
+           println!("Repository is missing files referenced in config file! exiting");
+           process::exit(1);
+       }
     }
     
     match repo_file_handle {
        Ok(m) => println!("File {} already exists!", repo_path),
-       Err(error) => println!("{}", error)
+       Err(error) => { 
+           println!("Repository error: {}", error);
+           println!("Repository is missing files referenced in config file! exiting");
+           process::exit(1);
+       }
     }
 }
 
