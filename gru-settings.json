@@ -1,7 +1,0 @@
-{
-    "url": "https://github.com/teodorstupnicki/.dotfiles",
-    "files": [
-        "~/.vimrc:vim/.vimrc",
-        "~/.config/nvim/init.nvim:nvim/init.nvim"
-    ]
-}
