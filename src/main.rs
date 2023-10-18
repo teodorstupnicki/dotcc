@@ -87,8 +87,8 @@ fn parse_file(config_line: &str) {
     match system_file_handle {
        Ok(m) => println!("File {} already exists!", system_path),
        Err(error) => { 
-           println!("Repository error: {}", error);
-           println!("Repository is missing files referenced in config file! exiting");
+           println!("Error: {}", error);
+           println!("File is not installed in filesystem yet!");
            process::exit(1);
        }
     }
