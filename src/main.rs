@@ -68,7 +68,7 @@ fn get_config(filename: &str) {
     });
 }
 
-fn parse_file(config_line: &str) {
+fn parse_file(config_line: &str, ins_fi: &mut i32) {
     let home_dir = match dirs::home_dir() {
         Some(home) => home,
         None => PathBuf::from("")
@@ -86,12 +86,12 @@ fn parse_file(config_line: &str) {
     let repo_file_handle = fs::metadata(repo_path);
     match system_file_handle {
        Ok(m) => {
+           *ins_fi += 1;
            println!("File {} already exists!", system_path); 
        },
        Err(error) => { 
            println!("Error: {}", error);
            println!("File is not installed in filesystem yet!");
-           process::exit(1);
        }
     }
     
@@ -100,7 +100,6 @@ fn parse_file(config_line: &str) {
        Err(error) => { 
            println!("Repository error: {}", error);
            println!("Repository is missing files referenced in config file! exiting");
-           process::exit(1);
        }
     }
 }
@@ -115,9 +114,11 @@ fn run_check(subcommand: CheckSubcommand) {
         process::exit(1);
     });
     println!("Found {} file entries in config file", config.files.len());
+    let mut installed_files = 0;
     for line in config.files.iter() {
-        parse_file(line);
+        parse_file(line, &mut installed_files);
     }
+    println!("Files missing from file system: {}", installed_files);
 }
 
 fn run_install(subcommand: InstallSubcommand) {
