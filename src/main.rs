@@ -85,7 +85,9 @@ fn parse_file(config_line: &str) {
     let system_file_handle = fs::metadata(home_str.to_string());
     let repo_file_handle = fs::metadata(repo_path);
     match system_file_handle {
-       Ok(m) => println!("File {} already exists!", system_path),
+       Ok(m) => {
+           println!("File {} already exists!", system_path); 
+       },
        Err(error) => { 
            println!("Error: {}", error);
            println!("File is not installed in filesystem yet!");
@@ -112,6 +114,7 @@ fn run_check(subcommand: CheckSubcommand) {
         eprintln!("Problem with creating configuration object: {err}");
         process::exit(1);
     });
+    println!("Found {} file entries in config file", config.files.len());
     for line in config.files.iter() {
         parse_file(line);
     }
